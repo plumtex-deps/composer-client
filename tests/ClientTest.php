@@ -9,8 +9,6 @@ class ClientTest extends TestCase
 {
     public function testMarketplaceIndex()
     {
-
-
         $composerClient = new Client();
         $composerSearch = $composerClient->search();
 
