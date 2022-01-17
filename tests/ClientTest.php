@@ -2,13 +2,14 @@
 
 namespace MicroweberPackages\ComposerClient;
 
+use PHPUnit\Framework\TestCase;
 use MicroweberPackages\ComposerClient\Client;
 
 class ClientTest extends TestCase
 {
     public function testMarketplaceIndex()
     {
-     
+
 
         $composerClient = new Client();
         $composerSearch = $composerClient->search();
