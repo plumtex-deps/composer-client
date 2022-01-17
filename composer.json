@@ -1,6 +1,6 @@
 {
-   "name":"microweber-packages/microweber-composer-client",
-   "description":"Microweber Composer Client",
+   "name":"microweber-packages/composer-client",
+   "description":"Composer Client",
    "version":"1.0",
    "authors":[
       {
