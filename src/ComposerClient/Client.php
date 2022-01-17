@@ -9,12 +9,11 @@ class Client
 {
     use FileDownloader;
 
+    public $logfile;
     public $licenses = [];
     public $packageServers = [
         'https://market.microweberapi.com/packages/microweber/packages.json',
     ];
-
-    public $logfile = false;
 
     public function __construct()
     {
@@ -88,5 +87,20 @@ class Client
             }
             return [];
         }
+    }
+
+    public function newLog($log)
+    {
+        @file_put_contents($this->logfile, $log . PHP_EOL);
+    }
+
+    public function clearLog()
+    {
+        @file_put_contents($this->logfile, '');
+    }
+
+    public function log($log)
+    {
+        @file_put_contents($this->logfile, $log . PHP_EOL, FILE_APPEND);
     }
 }
