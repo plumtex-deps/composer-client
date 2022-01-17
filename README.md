@@ -1,2 +1,2 @@
-# microweber-composer-client
-Microweber Composer Client
+# composer-client
+Composer Client
