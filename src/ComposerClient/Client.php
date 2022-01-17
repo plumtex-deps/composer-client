@@ -9,15 +9,14 @@ class Client
 {
     use FileDownloader;
 
-    public $logfile;
     public $licenses = [];
     public $packageServers = [
         'https://market.microweberapi.com/packages/microweber/packages.json',
     ];
 
-    public function __construct()
+    public function setLicense($license)
     {
-        $this->logfile = userfiles_path() . 'install_item_log.txt';
+        $this->licenses[] = $license;
     }
 
     public function search($filter = array())
@@ -25,25 +24,25 @@ class Client
         $packages = [];
         foreach ($this->packageServers as $package) {
 
-            $getRepositories = $this->getPackageFile($package);
+            $package = $this->getPackageFile($package);
 
             if (empty($filter)) {
-                return $getRepositories;
+                return $package;
             }
 
-            foreach ($getRepositories as $packageName => $packageVersions) {
+            foreach ($package as $name => $versions) {
 
-                if (!is_array($packageVersions)) {
+                if (!is_array($versions)) {
                     continue;
-                }
+                };
 
-                if ((isset($filter['require_name']) && ($filter['require_name'] == $packageName))) {
+                if (isset($filter['require_name']) && ($filter['require_name'] == $name)) {
 
-                    $packageVersions['latest'] = end($packageVersions);
+                    $versions['latest'] = end($versions);
 
-                    foreach ($packageVersions as $packageVersion => $packageVersionData) {
-                        if ($filter['require_version'] == $packageVersion) {
-                            $packages[] = $packageVersionData;
+                    foreach ($versions as $version => $versionData) {
+                        if ($filter['require_version'] == $version) {
+                            $packages[] = $versionData;
                             break;
                         }
                     }
@@ -88,19 +87,5 @@ class Client
             return [];
         }
     }
-
-    public function newLog($log)
-    {
-        @file_put_contents($this->logfile, $log . PHP_EOL);
-    }
-
-    public function clearLog()
-    {
-        @file_put_contents($this->logfile, '');
-    }
-
-    public function log($log)
-    {
-        @file_put_contents($this->logfile, $log . PHP_EOL, FILE_APPEND);
-    }
+    
 }
