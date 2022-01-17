@@ -14,6 +14,11 @@ class Client
         'https://market.microweberapi.com/packages/microweber/packages.json',
     ];
 
+    public function __construct()
+    {
+        // 
+    }
+
     public function setLicense($license)
     {
         $this->licenses[] = $license;
@@ -87,5 +92,5 @@ class Client
             return [];
         }
     }
-    
+
 }
