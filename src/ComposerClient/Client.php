@@ -11,7 +11,7 @@ class Client
 
     public $licenses = [];
     public $packageServers = [
-        'https://market.microweberapi.com/packages/microweber/packages.json',
+        'https://packages.microweberapi.com/',
     ];
 
     public function __construct()
