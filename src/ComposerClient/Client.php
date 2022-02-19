@@ -63,7 +63,17 @@ class Client
     {
         $curl = curl_init();
 
-        curl_setopt_array($curl, [
+
+        $headers = [];
+        if (defined('MW_VERSION')) {
+            $headers[] = "MW_VERSION: " . MW_VERSION;
+        }
+        if (!empty($this->licenses)) {
+            $headers[] = "Authorization: Basic " . base64_encode(json_encode($this->licenses));
+        }
+
+
+        $opts = [
             CURLOPT_URL => $packageUrl,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
@@ -72,10 +82,12 @@ class Client
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_POSTFIELDS => "",
-            CURLOPT_HTTPHEADER => [
-                "Authorization: Basic " . base64_encode(json_encode($this->licenses))
-            ],
-        ]);
+        ];
+        if (!empty($headers)) {
+            $opts[CURLOPT_HTTPHEADER] = $headers;
+        }
+
+        curl_setopt_array($curl, $opts);
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
