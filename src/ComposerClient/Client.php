@@ -26,7 +26,8 @@ class Client
 
     public function getPackageByName($packageName) {
 
-        
+        dd($packageName);
+
     }
 
     public function search($filter = array())
