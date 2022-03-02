@@ -24,51 +24,70 @@ class Client
         $this->licenses[] = $license;
     }
 
-    public function getPackageByName($packageName) {
+    public function getPackageByName($packageName, $packageVersion = false) {
 
-        dd($packageName);
+        $foundedPackage = [];
+        foreach ($this->packageServers as $package) {
 
+            $singlePackageParseUrl = parse_url($package);
+            $singlePackageUrl = $singlePackageParseUrl['scheme'] .'://'. $singlePackageParseUrl['host']. '/packages/'.$packageName.'.json';
+
+            $packageFile = $this->getPackageFile($singlePackageUrl);
+
+            if (!empty($packageFile)) {
+                foreach ($packageFile as $name => $versions) {
+                    if (!is_array($versions)) {
+                        continue;
+                    }
+                    if ($packageName == $name) {
+
+                        $versions['latest'] = end($versions);
+
+                        if ($packageVersion) {
+                            foreach ($versions as $version => $versionData) {
+                                if ($packageVersion == $version) {
+                                    $foundedPackage = $versionData;
+                                    break;
+                                }
+                            }
+                        } else {
+                            $foundedPackage = end($versions);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return $foundedPackage;
     }
 
     public function search($filter = array())
     {
-        $packages = [];
-        foreach ($this->packageServers as $package) {
+        if (!empty($filter) && isset($filter['require_name'])) {
 
-            $package = $this->getPackageFile($package);
+            $packageName = $filter['require_name'];
 
-            if (empty($filter)) {
-                return $package;
+            if (isset($filter['require_version'])) {
+                $packageVersion = $filter['require_version'];
             }
 
-            foreach ($package as $name => $versions) {
+            return $this->getPackageByName($packageName, $packageVersion);
+        }
 
-                if (!is_array($versions)) {
-                    continue;
-                };
-
-                if (isset($filter['require_name']) && ($filter['require_name'] == $name)) {
-
-                    $versions['latest'] = end($versions);
-
-                    foreach ($versions as $version => $versionData) {
-                        if ($filter['require_version'] == $version) {
-                            $packages[] = $versionData;
-                            break;
-                        }
-                    }
-                }
-
+        foreach ($this->packageServers as $package) {
+            $packageFile = $this->getPackageFile($package);
+            if (!empty($packageFile)) {
+                return $packageFile;
             }
         }
 
-        return $packages;
+        return [];
     }
 
     public function getPackageFile($packageUrl)
     {
         $curl = curl_init();
-
 
         $headers = [];
         if (defined('MW_VERSION')) {
@@ -77,7 +96,6 @@ class Client
         if (!empty($this->licenses)) {
             $headers[] = "Authorization: Basic " . base64_encode(json_encode($this->licenses));
         }
-
 
         $opts = [
             CURLOPT_URL => $packageUrl,
