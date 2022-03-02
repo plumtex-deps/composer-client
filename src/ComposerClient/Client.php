@@ -16,12 +16,17 @@ class Client
 
     public function __construct()
     {
-        // 
+        //
     }
 
     public function setLicense($license)
     {
         $this->licenses[] = $license;
+    }
+
+    public function getPackageByName($packageName) {
+
+        
     }
 
     public function search($filter = array())
