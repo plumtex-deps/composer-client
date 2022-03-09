@@ -68,6 +68,7 @@ class Client
 
             $packageName = $filter['require_name'];
 
+            $packageVersion = false;
             if (isset($filter['require_version'])) {
                 $packageVersion = $filter['require_version'];
             }
