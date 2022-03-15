@@ -18,8 +18,13 @@ class Client
     {
         //
     }
-
+    
     public function setLicense($license)
+    {
+        $this->licenses = $license;
+    }
+    
+    public function addLicense($license)
     {
         $this->licenses[] = $license;
     }
