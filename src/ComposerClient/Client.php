@@ -18,12 +18,12 @@ class Client
     {
         //
     }
-    
-    public function setLicense($license)
+
+    public function setLicenses(array $licenses)
     {
-        $this->licenses = $license;
+        $this->licenses = $licenses;
     }
-    
+
     public function addLicense($license)
     {
         $this->licenses[] = $license;
@@ -100,7 +100,7 @@ class Client
             $headers[] = "MW_VERSION: " . MW_VERSION;
         }
         if (!empty($this->licenses)) {
-            $headers[] = "Authorization: Basic " . base64_encode(json_encode($this->licenses));
+            $headers[] = "Authorization: Basic " . base64_encode('license:' . base64_encode(json_encode($this->licenses)));
         }
 
         $opts = [
@@ -128,6 +128,9 @@ class Client
             return ["error" => "cURL Error #:" . $err];
         } else {
             $getPackages = json_decode($response, true);
+
+            dump($getPackages);
+
             if (isset($getPackages['packages']) && is_array($getPackages['packages'])) {
                 return $getPackages['packages'];
             }
