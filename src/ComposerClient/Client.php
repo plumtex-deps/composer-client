@@ -129,8 +129,6 @@ class Client
         } else {
             $getPackages = json_decode($response, true);
 
-            dump($getPackages);
-
             if (isset($getPackages['packages']) && is_array($getPackages['packages'])) {
                 return $getPackages['packages'];
             }
