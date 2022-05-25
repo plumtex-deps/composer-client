@@ -99,6 +99,9 @@ class Client
         if (defined('MW_VERSION')) {
             $headers[] = "MW_VERSION: " . MW_VERSION;
         }
+        if (defined('MW_VERSION') and function_exists('site_url')) {
+            $headers[] = "MW_SITE_URL: " . site_url();
+        }
         if (!empty($this->licenses)) {
             $headers[] = "Authorization: Basic " . base64_encode('license:' . base64_encode(json_encode($this->licenses)));
         }
