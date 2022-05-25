@@ -91,20 +91,26 @@ class Client
         return [];
     }
 
-    public function getPackageFile($packageUrl)
+    public function prepareHeaders()
     {
-        $curl = curl_init();
-
         $headers = [];
         if (defined('MW_VERSION')) {
             $headers[] = "MW_VERSION: " . MW_VERSION;
         }
-        if (defined('MW_VERSION') and function_exists('site_url')) {
+        if (function_exists('site_url')) {
             $headers[] = "MW_SITE_URL: " . site_url();
         }
         if (!empty($this->licenses)) {
             $headers[] = "Authorization: Basic " . base64_encode('license:' . base64_encode(json_encode($this->licenses)));
         }
+        return $headers;
+    }
+
+    public function getPackageFile($packageUrl)
+    {
+        $curl = curl_init();
+
+        $headers = $this->prepareHeaders();
 
         $opts = [
             CURLOPT_URL => $packageUrl,
@@ -138,5 +144,51 @@ class Client
             return [];
         }
     }
+
+    public function notifyPackageInstall($package)
+    {
+        $packageUrl = false;
+        if (isset($package['notification-url'])) {
+            $packageUrl = $package['notification-url'];
+        }
+
+        if(!$packageUrl){
+            return;
+        }
+
+        $curl = curl_init();
+
+        $headers = $this->prepareHeaders();
+
+        $opts = [
+            CURLOPT_URL => $packageUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "",
+        ];
+        if (!empty($headers)) {
+            $opts[CURLOPT_HTTPHEADER] = $headers;
+        }
+
+        curl_setopt_array($curl, $opts);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            return ["error" => "cURL Error #:" . $err];
+        } else {
+            return @json_decode($response, true);
+
+        }
+
+    }
+
 
 }
