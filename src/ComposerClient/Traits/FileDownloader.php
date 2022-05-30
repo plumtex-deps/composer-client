@@ -31,9 +31,7 @@ trait FileDownloader
         }
 
         $ch = curl_init();
-
         curl_setopt_array($ch, $options);
-
         $return = curl_exec($ch);
 
         if ($return === false) {
