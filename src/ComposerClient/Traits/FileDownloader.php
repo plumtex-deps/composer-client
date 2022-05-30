@@ -26,6 +26,7 @@ trait FileDownloader
         }
 
         $headers = $this->prepareHeaders();
+
         if (!empty($headers)) {
             $options[CURLOPT_HTTPHEADER] = $headers;
         }
