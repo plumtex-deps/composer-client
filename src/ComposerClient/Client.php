@@ -96,11 +96,11 @@ class Client
         $headers = [];
 
         if (defined('MW_VERSION')) {
-            $headers[] = "MW_VERSION: " . urlencode(MW_VERSION);
+            $headers[] = "x-mw-version: " . MW_VERSION;
         }
 
         if (function_exists('site_url')) {
-            $headers[] = "MW_SITE_URL: " . urlencode(site_url());
+            $headers[] = "x-mw-site-url: " . base64_encode(site_url());
         }
 
         if (!empty($this->licenses)) {
@@ -108,7 +108,7 @@ class Client
         }
 
         if (function_exists('mw_root_path')) {
-            $headers[] = "MW_ROOT_PATH: " . urlencode(mw_root_path());
+            $headers[] = "x-mw-root-path: " . base64_encode(mw_root_path());
         }
 
         return $headers;
