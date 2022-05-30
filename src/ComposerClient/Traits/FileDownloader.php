@@ -24,8 +24,11 @@ trait FileDownloader
             $options[CURLOPT_STDERR] = fopen($logFile, 'a+');
             $options[CURLOPT_WRITEHEADER] = fopen($logFile, 'a+');
         }
-        
-        $options[CURLOPT_HTTPHEADER] = $this->prepareHeaders();
+
+        $headers = $this->prepareHeaders();
+        if (!empty($headers)) {
+            $options[CURLOPT_HTTPHEADER] = $headers;
+        }
 
         $ch = curl_init();
 
