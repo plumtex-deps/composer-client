@@ -94,15 +94,23 @@ class Client
     public function prepareHeaders()
     {
         $headers = [];
+
         if (defined('MW_VERSION')) {
             $headers[] = "MW_VERSION: " . MW_VERSION;
         }
+
         if (function_exists('site_url')) {
             $headers[] = "MW_SITE_URL: " . site_url();
         }
+
         if (!empty($this->licenses)) {
             $headers[] = "Authorization: Basic " . base64_encode('license:' . base64_encode(json_encode($this->licenses)));
         }
+
+        if (function_exists('mw_root_path')) {
+            $headers[] = "MW_ROOT_PATH: " . mw_root_path();
+        }
+
         return $headers;
     }
 
