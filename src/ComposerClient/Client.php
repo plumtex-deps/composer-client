@@ -35,6 +35,8 @@ class Client
         $servers = [];
         $valid = false;
 
+        $license = trim($license);
+
         foreach ($this->packageServers as $package) {
 
             $singlePackageParseUrl = parse_url($package);
@@ -69,10 +71,13 @@ class Client
                 $servers[$singlePackageParseUrl['host']] = ["error" => "cURL Error #:" . $err];
             } else {
                 $jsonResponse = @json_decode($response, true);
-                $servers[$singlePackageParseUrl['host']] = $jsonResponse;
-                $status = $jsonResponse['details']['status'];
-                if ($status == 'Active') {
-                    $valid = true;
+                if (!empty($jsonResponse)) {
+                    $servers[$singlePackageParseUrl['host']] = $jsonResponse;
+
+                    $status = $jsonResponse['details']['status'];
+                    if ($status == 'Active') {
+                        $valid = true;
+                    }
                 }
             }
         }
