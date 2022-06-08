@@ -70,8 +70,10 @@ class Client
             } else {
                 $jsonResponse = @json_decode($response, true);
                 $servers[$singlePackageParseUrl['host']] = $jsonResponse;
-                $valid = true;
                 $status = $jsonResponse['details']['status'];
+                if ($status == 'Active') {
+                    $valid = true;
+                }
             }
         }
 
