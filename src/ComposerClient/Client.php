@@ -35,8 +35,6 @@ class Client
         $servers = [];
         $valid = false;
 
-        $license = trim($license);
-
         foreach ($this->packageServers as $package) {
 
             $singlePackageParseUrl = parse_url($package);
