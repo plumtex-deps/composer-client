@@ -29,6 +29,55 @@ class Client
         $this->licenses[] = $license;
     }
 
+    public function consumeLicense($license)
+    {
+        $status = 'invalid';
+        $servers = [];
+        $valid = false;
+
+        foreach ($this->packageServers as $package) {
+
+            $singlePackageParseUrl = parse_url($package);
+            $licenseCheckPackageUrl = $singlePackageParseUrl['scheme'] . '://' . $singlePackageParseUrl['host'] . '/licenses/check?key=' . $license;
+
+            $curl = curl_init();
+
+            $headers = $this->prepareHeaders();
+
+            $opts = [
+                CURLOPT_URL => $licenseCheckPackageUrl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_POSTFIELDS => "",
+            ];
+            if (!empty($headers)) {
+                $opts[CURLOPT_HTTPHEADER] = $headers;
+            }
+
+            curl_setopt_array($curl, $opts);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                $servers[$singlePackageParseUrl['host']] = ["error" => "cURL Error #:" . $err];
+            } else {
+                $jsonResponse = @json_decode($response, true);
+                $servers[$singlePackageParseUrl['host']] = $jsonResponse;
+                $valid = true;
+                $status = $jsonResponse['details']['status'];
+            }
+        }
+
+        return ['valid'=>$valid, 'status'=>$status, 'servers'=>$servers];
+    }
+
     public function getPackageByName($packageName, $packageVersion = false) {
 
         $foundedPackage = [];
