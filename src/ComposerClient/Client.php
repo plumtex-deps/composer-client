@@ -158,7 +158,11 @@ class Client
         }
 
         if (!empty($this->licenses)) {
-            $headers[] = "Authorization: Basic " . base64_encode('license:' . base64_encode(json_encode($this->licenses)));
+
+            $base64EncodedPassword = base64_encode(json_encode($this->licenses));
+            $base64Encoded = base64_encode('license:' . $base64EncodedPassword);
+
+            $headers[] = "Authorization: Basic " . $base64Encoded;
         }
 
         if (function_exists('mw_root_path')) {
