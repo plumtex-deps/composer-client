@@ -69,7 +69,7 @@ class Client
                 $servers[$singlePackageParseUrl['host']] = ["error" => "cURL Error #:" . $err];
             } else {
                 $jsonResponse = @json_decode($response, true);
-                
+
                 if (!empty($jsonResponse)) {
                     $servers[$singlePackageParseUrl['host']] = $jsonResponse;
 
