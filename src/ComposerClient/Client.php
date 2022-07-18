@@ -57,7 +57,9 @@ class Client
             if (!empty($headers)) {
                 $opts[CURLOPT_HTTPHEADER] = $headers;
             }
-
+            
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // Skip SSL Verification
+            
             curl_setopt_array($curl, $opts);
 
             $response = curl_exec($curl);
@@ -194,6 +196,7 @@ class Client
         if (!empty($headers)) {
             $opts[CURLOPT_HTTPHEADER] = $headers;
         }
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // Skip SSL Verification
 
         curl_setopt_array($curl, $opts);
 
@@ -243,6 +246,8 @@ class Client
             $opts[CURLOPT_HTTPHEADER] = $headers;
         }
 
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // Skip SSL Verification
+        
         curl_setopt_array($curl, $opts);
 
         $response = curl_exec($curl);
