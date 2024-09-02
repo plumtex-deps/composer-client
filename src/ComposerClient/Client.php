@@ -57,9 +57,9 @@ class Client
             if (!empty($headers)) {
                 $opts[CURLOPT_HTTPHEADER] = $headers;
             }
-            
+
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // Skip SSL Verification
-            
+
             curl_setopt_array($curl, $opts);
 
             $response = curl_exec($curl);
@@ -140,14 +140,15 @@ class Client
             return $this->getPackageByName($packageName, $packageVersion);
         }
 
+        $packageFileMerged = [];
         foreach ($this->packageServers as $package) {
             $packageFile = $this->getPackageFile($package);
             if (!empty($packageFile)) {
-                return $packageFile;
+                $packageFileMerged = array_merge($packageFileMerged, $packageFile);
             }
         }
 
-        return [];
+        return $packageFileMerged;
     }
 
     public function prepareHeaders()
@@ -247,7 +248,7 @@ class Client
         }
 
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // Skip SSL Verification
-        
+
         curl_setopt_array($curl, $opts);
 
         $response = curl_exec($curl);
