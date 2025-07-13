@@ -20,7 +20,7 @@
   },
   "autoload": {
     "psr-4": {
-      "MicroweberPackages\\": "src/"
+      "PlumtexPackages\\": "src/"
     }
   },
   "prefer-stable": true,
