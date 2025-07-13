@@ -1,14 +1,14 @@
 {
-  "name": "microweber-packages/composer-client",
+  "name": "plumtex-deps/composer-client",
   "description": "Composer Client",
   "authors": [
     {
-      "name": "Microweber",
-      "email": "info@microweber.com"
+      "name": "Plumtex",
+      "email": "support@plumtex.com"
     },
     {
-      "name": "Bozhidar Slaveykov",
-      "email": "bobi@microweber.com"
+      "name": "Petko Yovchevski",
+      "email": "support@plumtex.com"
     }
   ],
   "require": {
@@ -24,9 +24,9 @@
     }
   },
   "prefer-stable": true,
-  "homepage": "http://microweber.com",
+  "homepage": "http://plumtex.com",
   "license": "MIT",
   "support": {
-    "email": "support@microweber.com"
+    "email": "support@plumtex.com"
   }
 }
