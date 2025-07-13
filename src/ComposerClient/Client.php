@@ -1,9 +1,9 @@
 <?php
 
-namespace MicroweberPackages\ComposerClient;
+namespace PlumtexPackages\ComposerClient;
 
-use MicroweberPackages\App\Models\SystemLicenses;
-use MicroweberPackages\ComposerClient\Traits\FileDownloader;
+use PlumtexPackages\App\Models\SystemLicenses;
+use PlumtexPackages\ComposerClient\Traits\FileDownloader;
 
 class Client
 {

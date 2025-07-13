@@ -1,6 +1,6 @@
 <?php
 
-namespace MicroweberPackages\ComposerClient\Traits;
+namespace PlumtexPackages\ComposerClient\Traits;
 
 trait FileDownloader
 {

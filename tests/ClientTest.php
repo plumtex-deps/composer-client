@@ -1,9 +1,9 @@
 <?php
 
-namespace MicroweberPackages\ComposerClient;
+namespace PlumtexPackages\ComposerClient;
 
 use PHPUnit\Framework\TestCase;
-use MicroweberPackages\ComposerClient\Client;
+use PlumtexPackages\ComposerClient\Client;
 
 class ClientTest extends TestCase
 {
